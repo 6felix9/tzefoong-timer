@@ -124,7 +124,6 @@ function Timer({func}) {
                     )}
                 </div>
 
-                {/* NEW: Overlay for stopping flash */}
                 {flash && (
                 <div className="flash-overlay" onClick={handleStopFlash}>
                     <p>STOP</p>
