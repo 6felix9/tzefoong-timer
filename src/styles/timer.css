@@ -1,0 +1,49 @@
+.timer-overlay {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.timer-body {
+    border: 2px black solid;
+    border-radius: 20px;
+    padding: 20px 50px;
+    max-width: 1200px;
+    display: flex;
+    gap: 5px;
+    background-color: #f0f0f0;
+}
+
+.timer-body div, .timer-body input {
+    font-family: Poppins, sans-serif;
+    padding: 20px;
+    border: 2px black solid;
+    border-radius: 20px;
+    height: 125px;
+    width: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 5rem;
+    background-color: aliceblue;
+}
+
+.button-body {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0px;
+    gap: 20px;
+}
+
+.button-body button {
+    padding: 7.5px;
+    border-radius: 10px;
+    font-size: 1rem;
+    width: 125px;
+    font-family: Poppins, sans-serif;
+}
+
+.button-body button:hover {
+    cursor: pointer;
+    background-color: gray;
+}
