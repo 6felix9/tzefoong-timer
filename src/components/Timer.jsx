@@ -1,10 +1,13 @@
-import { useState, useEffect } from 'react'
-import '../styles/timer.css'
-import StartReset from '../components/StartReset'
+import { useState, useEffect } from 'react';
+import '../styles/timer.css';
+import StartReset from '../components/StartReset';
+import { parseDurationToSeconds } from '../utils/getTime';
 
-function Timer() {
+function Timer({ duration }) {
+    // Calculate default time outside the component logic
+    const defaultTime = parseDurationToSeconds(duration);
 
-    const [time, setTime] = useState(0);
+    const [time, setTime] = useState(defaultTime);
     const [isRunning, setIsRunning] = useState(false);
     const [editing, setEditing] = useState(null);
     const [tempValues, setTempValues] = useState(["0", "0", ":", "0", "0", ":", "0", "0"]);
