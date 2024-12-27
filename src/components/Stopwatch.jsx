@@ -36,13 +36,20 @@ function Stopwatch() {
             return () => clearInterval(timerInterval);
     }, [isRunning]);
 
+    const formattedTime = formatTime(time).split(''); // Split time into characters
+    const nonZeroIndex = formattedTime.findIndex((char) => char !== '0' && char !== ':'); // First active digit or colon
     return (
         <>
             <main className="timer-overlay">
                 <div className="timer-body">
-                    {formatTime(time).split("").map((num, index) => 
-                    <div key={index}>
-                        {num}
+                    {formatTime(time).split("").map((char, index) => 
+                    <div 
+                        key={index}
+                        style={{
+                            color: index >= nonZeroIndex ? 'black' : '#d4d4d4', // Grey out until active
+                        }}
+                    >
+                        {char}
                     </div> 
                     )}
                 </div>

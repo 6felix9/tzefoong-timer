@@ -96,14 +96,20 @@ function Timer({ duration }) {
         document.body.classList.remove('flash-red');
     }
 
+    const formattedTime = formatTime(time).split(""); // Split time into characters
+    const nonZeroIndex = formattedTime.findIndex((char) => char !== '0' && char !== ':'); // Find first active digit or colon
+
     return (
         <>
             <main className="timer-overlay">
                 <div className="timer-body">
-                    {formatTime(time).split("").map((num, index) => 
+                    {formatTime(time).split("").map((char, index) => 
                     <div 
                         key={index}
                         onClick={() => handleDigitClick(index)}
+                        style={{
+                            color: (editing || index < nonZeroIndex) ? '#d4d4d4' : 'black', // Grey out until active
+                        }}
                     >
                         {(editing === index) ? (
                         <input
@@ -113,9 +119,10 @@ function Timer({ duration }) {
                             onBlur={() => handleBlur(index)}
                             maxLength={1}
                             autoFocus
+                            style={{color: 'black'}}
                         />
                         ) : (
-                            num
+                            char
                         )}
                     </div> 
                     )}
