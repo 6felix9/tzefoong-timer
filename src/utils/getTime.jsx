@@ -1,4 +1,8 @@
 export function parseDurationToSeconds(duration) {
+    if (!duration) {
+        return 0;
+    }
+
     const durationRegex = /(?:(\d+)h)?(?:(\d+)m)?(?:(\d+)s)?/;
     const match = duration.match(durationRegex);
   
