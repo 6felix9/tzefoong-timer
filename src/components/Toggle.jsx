@@ -1,27 +1,26 @@
 import '../styles/toggle.css';
 
-function Toggle({toggle, setToggle, setFunc}) {
+function Toggle({toggle, setToggle}) {
 
     function handleClick(newToggle) {
         setToggle(newToggle);
-        setFunc(newToggle == 'left' ? 'stopwatch' : 'timer');
     }
 
     return (
         <>
             <section className="toggle">
                 <div
-                    className={`toggle-box ${toggle === 'right' ? 'right-active' : ''}`}
+                    className={`toggle-box ${toggle === 'Timer' ? 'right-active' : ''}`}
                 >
                     <button
-                        className={`toggle-button ${toggle === 'left' ? 'active' : ''}`}
-                        onClick={() => handleClick('left')}
+                        className={`toggle-button ${toggle === 'Stopwatch' ? 'active' : ''}`}
+                        onClick={() => handleClick('Stopwatch')}
                     >
                         Stopwatch
                     </button>
                     <button
-                        className={`toggle-button ${toggle === 'right' ? 'active' : ''}`}
-                        onClick={() => handleClick('right')}
+                        className={`toggle-button ${toggle === 'Timer' ? 'active' : ''}`}
+                        onClick={() => handleClick('Timer')}
                     >
                         Timer
                     </button>

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import '../styles/timer.css'
+import StartReset from '../components/StartReset'
 
-function Timer({func}) {
+function Timer() {
 
     const [time, setTime] = useState(0);
     const [isRunning, setIsRunning] = useState(false);
@@ -10,8 +11,17 @@ function Timer({func}) {
     const [prevValue, setPrevValue] = useState(0);
     const [flash, setFlash] = useState(false);
 
+    const formatTime = (timeInSeconds) => {
+        const hours = String(Math.floor(timeInSeconds / 3600)).padStart(2, '0');
+        const minutes = String(Math.floor((timeInSeconds % 3600) / 60)).padStart(2, '0');
+        const seconds = String(timeInSeconds % 60).padStart(2, '0');
+        return `${hours}:${minutes}:${seconds}`;
+    };
+
     function handleStartStop() {
-        setIsRunning(!isRunning);
+        if (time != 0) {
+            setIsRunning(!isRunning);
+        };
     }
 
     function handleReset() {
@@ -24,41 +34,25 @@ function Timer({func}) {
     useEffect(() => {
         let timerInterval;
       
-        // Stopwatch Mode
-        if (func === 'stopwatch' && isRunning) {
-            timerInterval = setInterval(() => {
-                setTime((prevTime) => prevTime + 1);
-            }, 1000);
-        }
-      
         // Countdown Mode
-        if (func === 'timer' && isRunning && time > 0) {
+        if (isRunning && time > 0) {
             timerInterval = setInterval(() => {
                 setTime((prevTime) => Math.max(prevTime - 1, 0));
             }, 1000);
         }
       
         // When countdown hits 0, flash indefinitely
-        if (func === 'timer' && time === 0 && isRunning) {
+        if (time === 0 && isRunning) {
         
             setIsRunning(false); // Stop the countdown
             setFlash(true);
+            handleReset();
             document.body.classList.add('flash-red'); 
             // No setTimeout to remove the class, so it stays indefinitely
         }
       
             return () => clearInterval(timerInterval);
-    }, [isRunning, func, time]);
-      
-      
-    
-
-    const formatTime = (timeInSeconds) => {
-        const hours = String(Math.floor(timeInSeconds / 3600)).padStart(2, '0');
-        const minutes = String(Math.floor((timeInSeconds % 3600) / 60)).padStart(2, '0');
-        const seconds = String(timeInSeconds % 60).padStart(2, '0');
-        return `${hours}:${minutes}:${seconds}`;
-    };
+    }, [isRunning, time]);
 
     function handleDigitClick(index) {
         if (!isRunning && index != 2 && index != 5) {
@@ -108,7 +102,7 @@ function Timer({func}) {
                         key={index}
                         onClick={() => handleDigitClick(index)}
                     >
-                        {(editing === index && func === 'timer') ? (
+                        {(editing === index) ? (
                         <input
                             type="text"
                             value={tempValues[index]}
@@ -132,12 +126,11 @@ function Timer({func}) {
                 
             </main>
 
-            <section className="button-body">
-                <button onClick={handleStartStop}>
-                    {isRunning ? 'Stop' : 'Start'}
-                </button>
-                <button onClick={handleReset}>Reset</button>
-            </section>
+            <StartReset 
+                handleStartStop={handleStartStop} 
+                handleReset={handleReset} 
+                isRunning={isRunning}
+            />
         </>
     )
 }
