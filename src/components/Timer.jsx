@@ -36,6 +36,8 @@ function Timer({ duration }) {
 
     useEffect(() => {
         let timerInterval;
+        const formatted = formatTime(time).split(""); // Get formatted time as characters
+        setTempValues(formatted);
       
         // Countdown Mode
         if (isRunning && time > 0) {
@@ -58,14 +60,18 @@ function Timer({ duration }) {
     }, [isRunning, time]);
 
     function handleDigitClick(index) {
-        if (!isRunning && index != 2 && index != 5) {
-            setEditing(index);
-            const updatedTempValues = [...tempValues];
-            setPrevValue(updatedTempValues[index]);
-            updatedTempValues[index] = "";
-            setTempValues(updatedTempValues);
+        // Prevent digit click activation if already editing this digit
+        if (editing === index || isRunning || index === 2 || index === 5) {
+            return; // Do nothing
         }
+    
+        setEditing(index);
+        const updatedTempValues = [...tempValues];
+        setPrevValue(updatedTempValues[index]);
+        updatedTempValues[index] = "";
+        setTempValues(updatedTempValues);
     }
+    
 
     function handleInput(event, index) {
         const value = event.target.value.replace(/[^0-9]/g, ""); 
