@@ -31,6 +31,7 @@ function Timer({ duration }) {
         setIsRunning(false);
         setEditing(null);
         setTime(0);
+        handleStopFlash();
         setTempValues(["0", "0", ":", "0", "0", ":", "0", "0"]);
     }
 
@@ -50,8 +51,8 @@ function Timer({ duration }) {
         if (time === 0 && isRunning) {
         
             setIsRunning(false); // Stop the countdown
-            setFlash(true);
             handleReset();
+            setFlash(true);
             document.body.classList.add('flash-red'); 
             // No setTimeout to remove the class, so it stays indefinitely
         }
@@ -110,11 +111,16 @@ function Timer({ duration }) {
             <main className="timer-overlay">
                 <div className="timer-body">
                     {formatTime(time).split("").map((char, index) => 
-                    <div 
+                    <div
+                        className="digit"
                         key={index}
                         onClick={() => handleDigitClick(index)}
                         style={{
-                            color: (editing || index < nonZeroIndex) ? '#d4d4d4' : 'black', // Grey out until active
+                            color: flash
+                                ? '#d4d4d4' // Set all digits to gray when flashing
+                                : editing || index < nonZeroIndex
+                                ? '#d4d4d4' // Gray out unused digits
+                                : 'black', // Default color for active digits
                         }}
                     >
                         {(editing === index) ? (
@@ -132,14 +138,14 @@ function Timer({ duration }) {
                         )}
                     </div> 
                     )}
-                </div>
 
-                {flash && (
-                <div className="flash-overlay" onClick={handleStopFlash}>
-                    <p>STOP</p>
+                    {flash && (
+                        <div className="flash-overlay" onClick={handleStopFlash}>
+                            <p>STOP</p>
+                        </div>
+                    )}
+
                 </div>
-                )}
-                
             </main>
 
             <StartReset 

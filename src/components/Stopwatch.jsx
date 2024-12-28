@@ -43,7 +43,8 @@ function Stopwatch() {
             <main className="timer-overlay">
                 <div className="timer-body">
                     {formatTime(time).split("").map((char, index) => 
-                    <div 
+                    <div
+                        className="digit"
                         key={index}
                         style={{
                             color: index >= nonZeroIndex ? 'black' : '#d4d4d4', // Grey out until active
