@@ -118,7 +118,9 @@ function Timer({ duration }) {
                         style={{
                             color: flash
                                 ? '#d4d4d4' // Set all digits to gray when flashing
-                                : editing || index < nonZeroIndex
+                                : editing !== null
+                                ? '#d4d4d4' // Set all digits to gray when editing
+                                : index < nonZeroIndex
                                 ? '#d4d4d4' // Gray out unused digits
                                 : 'black', // Default color for active digits
                         }}
