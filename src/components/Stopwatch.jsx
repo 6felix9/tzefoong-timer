@@ -36,6 +36,10 @@ function Stopwatch() {
             return () => clearInterval(timerInterval);
     }, [isRunning]);
 
+    useEffect(() => {
+        document.title = `${formatTime(time)}`;
+    }, [time]);
+
     const formattedTime = formatTime(time).split(''); // Split time into characters
     const nonZeroIndex = formattedTime.findIndex((char) => char !== '0' && char !== ':'); // First active digit or colon
     return (
