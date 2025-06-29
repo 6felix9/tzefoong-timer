@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
-import '../styles/timer.css';
+import { useState, useEffect, useCallback } from 'react';
 import StartReset from '../components/StartReset';
 import { parseDurationToSeconds } from '../utils/getTime';
+import PropTypes from 'prop-types';
 
 function Timer({ duration }) {
     const defaultTime = parseDurationToSeconds(duration);
@@ -26,13 +26,18 @@ function Timer({ duration }) {
         }
     }
 
-    function handleReset() {
+    const handleStopFlash = useCallback(() => {
+        setFlash(false);
+        document.body.classList.remove('flash-red');
+    }, []);
+
+    const handleReset = useCallback(() => {
         setIsRunning(false);
         setEditing(null);
         setTime(0);
         handleStopFlash();
         setTempValues(["0", "0", ":", "0", "0", ":", "0", "0"]);
-    }
+    }, [handleStopFlash]);
 
     useEffect(() => {
         let timerInterval;
@@ -55,7 +60,7 @@ function Timer({ duration }) {
         }
 
         return () => clearInterval(timerInterval);
-    }, [isRunning, time]);
+    }, [isRunning, time, handleReset]);
 
     // Update the document title when the timer changes
     useEffect(() => {
@@ -98,64 +103,99 @@ function Timer({ duration }) {
         setTime(newTime);
     }
 
-    function handleStopFlash() {
-        setFlash(false);
-        document.body.classList.remove('flash-red');
-    }
-
     const formattedTime = formatTime(time).split("");
     const nonZeroIndex = formattedTime.findIndex((char) => char !== '0' && char !== ':');
 
     return (
-        <>
-            <main className="timer-overlay">
-                <div className="timer-body">
-                    {formatTime(time).split("").map((char, index) => (
-                        <div
-                            className="digit"
-                            key={index}
-                            onClick={() => handleDigitClick(index)}
-                            style={{
-                                color: flash
-                                    ? '#d4d4d4'
-                                    : editing !== null
-                                    ? '#d4d4d4'
-                                    : index < nonZeroIndex
-                                    ? '#d4d4d4'
-                                    : 'black',
-                            }}
-                        >
-                            {editing === index ? (
-                                <input
-                                    type="text"
-                                    value={tempValues[index]}
-                                    onChange={(event) => handleInput(event, index)}
-                                    onBlur={() => handleBlur(index)}
-                                    maxLength={1}
-                                    autoFocus
-                                    style={{ color: 'black' }}
-                                />
-                            ) : (
-                                char
-                            )}
-                        </div>
-                    ))}
-
+        <div className="flex flex-col items-center space-y-4">
+            <div className="relative">
+                <div className="bg-white border border-gray-300 rounded-xl p-6 shadow-lg">
+                    <div className="flex items-center justify-center space-x-3">
+                        {formatTime(time).split("").map((char, index) => {
+                            const isColon = char === ':';
+                            const isActive = !flash && editing === null && index >= nonZeroIndex;
+                            const isEditing = editing === index;
+                            
+                            return (
+                                <div
+                                    key={index}
+                                    className={`
+                                        flex items-center justify-center
+                                        font-mono font-bold text-8xl
+                                        transition-colors duration-200
+                                        ${
+                                            isColon 
+                                                ? 'cursor-default px-3' 
+                                                : `
+                                                    cursor-pointer rounded-lg
+                                                    h-28 w-20
+                                                    bg-gray-50 border border-gray-200
+                                                    hover:border-gray-400 hover:bg-gray-50
+                                                    ${isEditing ? 'ring-2 ring-gray-500 bg-gray-50' : ''}
+                                                `
+                                        }
+                                        ${
+                                            flash 
+                                                ? 'text-red-300' 
+                                                : editing !== null && !isEditing
+                                                ? 'text-gray-300'
+                                                : isActive
+                                                ? 'text-gray-800'
+                                                : 'text-gray-400'
+                                        }
+                                    `}
+                                    onClick={() => handleDigitClick(index)}
+                                >
+                                    {isEditing ? (
+                                        <input
+                                            type="text"
+                                            value={tempValues[index]}
+                                            onChange={(event) => handleInput(event, index)}
+                                            onBlur={() => handleBlur(index)}
+                                            maxLength={1}
+                                            autoFocus
+                                            className="w-full h-full bg-transparent text-center font-mono font-bold outline-none text-8xl text-gray-800"
+                                        />
+                                    ) : (
+                                        char
+                                    )}
+                                </div>
+                            );
+                        })}
+                    </div>
+                    
                     {flash && (
-                        <div className="flash-overlay" onClick={handleStopFlash}>
-                            <p>STOP</p>
+                        <div className="
+                            absolute inset-0 flex items-center justify-center
+                            bg-gradient-to-br from-red-500 to-red-600
+                            rounded-xl cursor-pointer
+                            shadow-2xl border-4 border-red-400
+                            animate-pulse
+                        " onClick={handleStopFlash}>
+                            <div className="text-center text-white">
+                                <div className="text-5xl font-bold mb-3 drop-shadow-lg">
+                                    ⏰ TIME&apos;S UP!
+                                </div>
+                                <div className="text-sm opacity-75">
+                                    Click anywhere to dismiss
+                                </div>
+                            </div>
                         </div>
                     )}
                 </div>
-            </main>
+            </div>
 
             <StartReset
                 handleStartStop={handleStartStop}
                 handleReset={handleReset}
                 isRunning={isRunning}
             />
-        </>
+        </div>
     );
 }
+
+Timer.propTypes = {
+    duration: PropTypes.string
+};
 
 export default Timer;
