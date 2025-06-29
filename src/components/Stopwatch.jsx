@@ -40,32 +40,64 @@ function Stopwatch() {
         document.title = `${formatTime(time)}`;
     }, [time]);
 
-    const formattedTime = formatTime(time).split(''); // Split time into characters
-    const nonZeroIndex = formattedTime.findIndex((char) => char !== '0' && char !== ':'); // First active digit or colon
+    const formattedTime = formatTime(time).split('');
+    const nonZeroIndex = formattedTime.findIndex((char) => char !== '0' && char !== ':');
+    
     return (
-        <>
-            <main className="timer-overlay">
-                <div className="timer-body">
-                    {formatTime(time).split("").map((char, index) => 
-                    <div
-                        className="digit"
-                        key={index}
-                        style={{
-                            color: index >= nonZeroIndex ? 'black' : '#d4d4d4', // Grey out until active
-                        }}
-                    >
-                        {char}
-                    </div> 
+        <div className="flex flex-col items-center space-y-4">
+            <div className="relative">
+                <div className="bg-white border border-gray-300 rounded-xl p-6 shadow-lg">
+                    <div className="flex items-center justify-center space-x-3">
+                        {formatTime(time).split("").map((char, index) => {
+                            const isColon = char === ':';
+                            const isActive = index >= nonZeroIndex;
+                            
+                            return (
+                                <div
+                                    key={index}
+                                    className={`
+                                        flex items-center justify-center
+                                        font-mono font-bold text-8xl
+                                        transition-colors duration-200
+                                        ${
+                                            isColon 
+                                                ? 'cursor-default px-3' 
+                                                : `
+                                                    rounded-lg h-28 w-20
+                                                    bg-gray-50 border border-gray-200
+                                                    ${isRunning ? 'border-green-400 bg-green-50' : ''}
+                                                `
+                                        }
+                                        ${
+                                            isActive
+                                                ? `text-gray-800 ${isRunning ? 'animate-pulse' : ''}` 
+                                                : 'text-gray-400'
+                                        }
+                                    `}
+                                >
+                                    {char}
+                                </div>
+                            );
+                        })}
+                    </div>
+                    
+                    {isRunning && (
+                        <div className="absolute top-4 right-4">
+                            <div className="flex items-center gap-2 px-3 py-1 bg-green-500 text-white rounded-full text-xs font-medium">
+                                <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                                <span>RUNNING</span>
+                            </div>
+                        </div>
                     )}
                 </div>
-            </main>
+            </div>
 
             <StartReset 
                 handleStartStop={handleStartStop} 
                 handleReset={handleReset} 
                 isRunning={isRunning}
             />
-        </>
+        </div>
     )
 }
 
