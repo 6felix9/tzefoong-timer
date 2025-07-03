@@ -14,3 +14,17 @@
     background: #dc2626;
   }
 }
+
+/* Background transition animation */
+@keyframes circle-expand {
+  0% {
+    clip-path: circle(0% at calc(100% - 2rem) 2rem);
+  }
+  100% {
+    clip-path: circle(150% at calc(100% - 2rem) 2rem);
+  }
+}
+
+.circle-expand {
+  animation: circle-expand 0.6s ease-out forwards;
+}

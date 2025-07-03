@@ -1,78 +1,154 @@
-# Timer and Stopwatch Website
+# 🕐 Tze Foong Timer
 
-Welcome to **Tze Foong Timer**, a React-based web application that functions as both a timer and a stopwatch. This app is perfect for managing countdowns or timing events like exams, workouts, practice sessions, or any activity requiring precise timing.
+A modern, responsive React-based timer and stopwatch web application designed for productivity, studying, workouts, and precise time management.
 
-## Features
+🌐 **Live Demo**: [tzefoongtimer.pages.dev](https://tzefoongtimer.pages.dev)
 
-### Timer
-- **URL-Based Timer Configuration**: Automatically set the timer via the URL. For example:
-  - `tzefoongtimer.pages.dev/1h30m` sets a 1-hour and 30-minute timer.
-  - `tzefoongtimer.pages.dev/30s` sets a 30-second timer.
-  - `tzefoongtimer.pages.dev/1h` sets a 1-hour timer.
-- **Simple Start/Stop Functionality**: Once the timer is set, press the start button to begin the countdown.
-- **Auto Flash on Completion**: The page will flash red when the countdown hits zero.
+## ✨ Features
 
-### Stopwatch
-- Start and stop the stopwatch to time your activities.
-- Reset functionality to clear and start over.
+### 🎯 Timer
+- **📋 URL-Based Configuration**: Set timers instantly via URL
+  - `tzefoongtimer.pages.dev/1h30m` → 1 hour 30 minutes
+  - `tzefoongtimer.pages.dev/30s` → 30 seconds  
+  - `tzefoongtimer.pages.dev/2h15m30s` → 2 hours 15 minutes 30 seconds
+- **✏️ Interactive Digit Editing**: Click any digit to edit time while timer is stopped
+- **🚨 Visual Flash Alert**: Full-screen red flash animation when timer reaches zero
+- **📱 Document Title Updates**: See remaining time in browser tab
+- **🎮 Intuitive Controls**: Start, stop, and reset with clean button interface
 
-### Editing Timer
-- Click on the timer digits to manually edit hours, minutes, or seconds.
-- Adjust the timer on the fly without stopping the countdown.
+### ⏱️ Stopwatch  
+- **▶️ Count-Up Timing**: Track elapsed time with precision
+- **🔄 Full Control**: Start, stop, and reset functionality
+- **📊 Live Updates**: Real-time display with smooth transitions
 
-## Usage
+### 🎨 User Experience
+- **🌓 Toggle Interface**: Seamlessly switch between Timer and Stopwatch modes
+- **📱 Responsive Design**: Works perfectly on desktop, tablet, and mobile
+- **⚡ Modern UI**: Clean design with Tailwind CSS styling
+- **🎯 Accessibility**: Keyboard navigation and screen reader support
 
-### Quick Setup via URL
-To use the timer quickly, include the desired duration in the URL:
+## 🚀 Quick Start
 
-1. Open the website in your browser.
-2. Append the desired time to the URL in the format:
-   - `h` for hours
-   - `m` for minutes
-   - `s` for seconds
+### URL Timer Setup
+Simply add your desired duration to the URL:
 
-Examples:
-- `tzefoongtimer.pages.dev/1h30m30s` sets the timer to 1 hour, 30 minutes, and 30 seconds.
-- `tzefoongtimer.pages.dev/45s` sets the timer to 45 seconds.
-- `tzefoongtimer.pages.dev/2h` sets the timer to 2 hours.
+| Format | Example | Result |
+|--------|---------|--------|
+| `Xh` | `/2h` | 2 hours |
+| `Xm` | `/45m` | 45 minutes |
+| `Xs` | `/30s` | 30 seconds |
+| `XhYm` | `/1h30m` | 1 hour 30 minutes |
+| `XhYmZs` | `/1h15m45s` | 1 hour 15 minutes 45 seconds |
 
-### Manual Timer Adjustment
-1. Click on the timer digits to enter edit mode.
-2. Enter the desired numbers for hours, minutes, or seconds.
-3. Press "Start" to begin the countdown.
+### Manual Setup
+1. Visit [tzefoongtimer.pages.dev](https://tzefoongtimer.pages.dev)
+2. Click on timer digits to edit
+3. Set your desired time
+4. Click "Start" to begin countdown
 
-### Stopwatch
-1. Open the website without specifying a duration in the URL.
-2. Toggle to stopwatch to start, stop, or reset the timer.
+## 🛠️ Local Development
 
-## Installation
+### Prerequisites
+- Node.js 18+ 
+- npm or yarn
 
-If you'd like to run the project locally:
+### Installation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-repo/tzefoong-timer.git
-   ```
+```bash
+# Clone the repository
+git clone https://github.com/6felix9/tzefoong-timer.git
 
-2. Navigate to the project directory:
-   ```bash
-   cd tzefoong-timer
-   ```
+# Navigate to project directory
+cd tzefoong-timer
 
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
+# Install dependencies
+npm install
 
-4. Start the development server:
-   ```bash
-   npm start
-   ```
+# Start development server
+npm run dev
 
-5. Open the app in your browser at `http://localhost:3000`.
+# Open http://localhost:5173 in your browser
+```
 
-## Technologies Used
+### Available Scripts
 
-- **React**: Front-end framework for building the user interface.
-- **CSS**: Custom styles for the timer and stopwatch.
-- **React Router**: To handle URL-based timer configurations.
+```bash
+npm run dev      # Start development server with Vite
+npm run build    # Build for production
+npm run preview  # Preview production build locally
+npm run lint     # Run ESLint for code quality
+```
+
+## 🏗️ Tech Stack
+
+| Technology | Purpose | Version |
+|------------|---------|---------|
+| **React** | Frontend framework | 18.3+ |
+| **Vite** | Build tool & dev server | 6.0+ |
+| **Tailwind CSS** | Utility-first styling | 4.1+ |
+| **React Router** | URL-based routing | 7.1+ |
+| **PropTypes** | Runtime type checking | 15.8+ |
+
+## 📁 Project Structure
+
+```
+src/
+├── components/           # Reusable UI components
+│   ├── Timer.jsx        # Main timer component with editing
+│   ├── Stopwatch.jsx    # Stopwatch functionality  
+│   ├── Toggle.jsx       # Timer/Stopwatch mode switch
+│   └── StartReset.jsx   # Control buttons
+├── pages/
+│   └── HomePage.jsx     # Main application page
+├── utils/
+│   └── getTime.jsx      # URL duration parsing logic
+├── index.css           # Global styles & animations
+└── main.jsx           # Application entry point
+```
+
+## 🎨 Key Features Deep Dive
+
+### Interactive Timer Editing
+- Click any digit (except colons) to enter edit mode
+- Input validation ensures proper time formatting
+- Visual feedback with digit highlighting during editing
+- Preserves original values if edit is cancelled
+
+### URL-Based Timer Configuration  
+- Regex-powered parsing supports flexible formats
+- Automatic validation and error handling
+- Seamless integration with React Router
+- Bookmark-friendly URLs for repeated use
+
+### Visual Flash Animation
+- Full-screen red flash when timer reaches zero
+- CSS keyframe animations for smooth transitions
+- Click-anywhere-to-dismiss functionality
+- Non-intrusive overlay design
+
+## 🚀 Deployment
+
+The application is deployed on Cloudflare Pages with automatic deployments from the main branch.
+
+### Build Commands
+- **Build Command**: `npm run build`
+- **Output Directory**: `dist`
+- **Node Version**: 18+
+
+## 🤝 Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📝 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 🙏 Acknowledgments
+
+- Built with modern React patterns and hooks
+- Styled with Tailwind CSS for rapid development
+- Deployed on Cloudflare Pages for global performance
